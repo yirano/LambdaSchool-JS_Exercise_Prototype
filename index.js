@@ -12,11 +12,13 @@ function Airplane(name) {
 	this.name = name;
 	this.isFlying = false;
 }
-Airplane.prototype.takeOff = function() {
-	this.isFlying = true;
-};
-Airplane.prototype.land = function() {
-	this.isFlying = false;
+Airplane.prototype = {
+	takeOff: function() {
+		this.isFlying = true;
+	},
+	land: function() {
+		this.isFlying = false;
+	}
 };
 
 /*
@@ -81,12 +83,13 @@ Car.prototype = {
 		return this.tank;
 	},
 	drive: function(distance) {
-		this.tank -= Math.floor(distance / this.milesPerGallon);
-		if (this.tank <= 0) {
-			this.odometer += distance - 1;
-			return `I ran out of fuel at ${this.odometer} miles!`;
+		this.odometer += distance;
+		if (this.odometer < this.milesPerGallon * this.tank) {
+			this.tank -= Math.floor(distance / this.milesPerGallon);
 		} else {
-			this.odometer += distance;
+			this.odometer = this.milesPerGallon * this.tank;
+			this.tank -= Math.floor(distance / this.milesPerGallon);
+			return `I ran out of fuel at ${this.odometer} miles!`;
 		}
 	}
 };
@@ -112,6 +115,7 @@ Baby.prototype = Object.create(Person.prototype, {
 		}
 	}
 });
+// Baby.prototype = Object.create(Person.prototype);
 // Baby.prototype.play = function() {
 // 	return `Playing with ${this.favoriteToy}`;
 // };
